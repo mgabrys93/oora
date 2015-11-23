@@ -10,7 +10,7 @@
 //#define IDX(i, j, n)	(((i) * (n)) + (j))
 #define IDX(i, j, n) (((j)+ (i)*(n)))
 #define BLOCK_SIZE 16
-#define SIZE 800
+#define SIZE 16
 
 static double gtod_ref_time_sec = 0.0;
 
@@ -23,7 +23,7 @@ int mm(double first[SIZE], double second[SIZE], double multiply[SIZE])
       for (k = 0; k < SIZE; k++) { //columns in first and rows in second
 	    sum = sum + first[IDX(i, k, SIZE)]*second[IDX(k, j, SIZE)];
 	  } 
-          multiply[IDX(i, j, SIZE)] = sum;
+      multiply[IDX(i, j, SIZE)] = sum;
 	  sum = 0;
     }
   }
@@ -40,6 +40,7 @@ double *generateSPDmatrix(){
 	for(i=0;i<SIZE;i++){
 		for(j=0;j<SIZE;j++){
 			double tmp = ((double)rand())/RAND_MAX;
+			printf("%le \t", tmp);
 			A[IDX(i, j, SIZE)] = tmp;
 			A[IDX(j, i, SIZE)] = tmp;
 		}
@@ -214,15 +215,23 @@ main()
 	srand((unsigned int)time(NULL));
 	double *A;
 	double dtime;
-	
+	int i, j;
 	A = generateSPDmatrix();
-	
+	for(i = 0; i < SIZE; i++){
+		for(j = 0; j < SIZE; j++){
+			printf("%le \t", A[IDX(i, j, SIZE)]);	
+		}
+		printf("\n");
+	}
 	dtime = dclock();
  	chol_left_looking(A, SIZE);
  	dtime = dclock()-dtime;
- 	double gflops = (2 * SIZE * SIZE * SIZE * 10e-9) / dtime;
+ 	double gflops = ((1.0/3.0) * SIZE * SIZE * SIZE * 10e-9) / dtime;
 	printf( "Time: %le \n", dtime);
 	printf("Gflops: %le \n", gflops);
+
+	
+
 	
 	return 0;
 }

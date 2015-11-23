@@ -103,7 +103,7 @@ main()
 	dtime = dclock();
  	chol(A, SIZE);
  	dtime = dclock()-dtime;
- 	double gflops = (2 * SIZE * SIZE * SIZE * 10e-9) / dtime;
+ 	double gflops = ((1.0/3.0) * SIZE * SIZE * SIZE * 10e-9) / dtime;
 	printf( "Time: %le \n", dtime);
 	printf("Gflops: %le \n", gflops);
 	return 0;
